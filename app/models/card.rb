@@ -20,6 +20,18 @@ class Card < ApplicationRecord
     end
   end
 
+  def self.cards_create(deck_id)
+    cards = Array.new
+    (1..13).to_a.each do |i|
+      %w[spades diamonds hearts clubs].each do |suit|
+        card = Card.new({ deck_id: deck_id, card_number: i, suit: suit })
+        cards << card
+      end
+    end
+    cards.shuffle!.each { |c| c.save }
+    cards
+  end
+
   def self.draw_card(game_id)
     card = Card.where(deck_id: Game.find(game_id)).first
     Card.where(deck_id: Game.find(game_id))
