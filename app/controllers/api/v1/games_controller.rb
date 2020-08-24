@@ -1,30 +1,22 @@
 module Api
   module V1
     class GamesController < ApplicationController
-      skip_before_action :verify_authenticity_token
-
       def create
-        game = Game.new(game_params)
+        raise ForbiddenError unless GamesPolicy.new(current_user).create?
 
-        if game.save
-          players = Player::create_players(game.id, player_params)
-          deck = Deck::create_deck(game.id)
-          deck.cards = Card::cards_create(deck.id)
+        result = Games::Create.call(create_params)
 
-          render json: { status: 'SUCCESS', message:'Created game.', data: players }, status: :ok
+        if result.success?
+          render json: result.game, status: :ok
         else
-          render json: { status: 'ERROR', message:'Game not created', data: game.errors }, status: :unprocessable_entity
+          render json: result.errors, status: :unprocessable_entity
         end
       end
 
       private
 
-      def game_params
-        params.permit(:game_name)
-      end
-
-      def player_params
-        params.permit(:player_name)
+      def create_params
+        params.permit(:name, :player_1, :player_2)
       end
     end
   end

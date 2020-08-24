@@ -7,4 +7,14 @@ class Game < ApplicationRecord
                                   minimum: 1,
                                   maximum: 254
                                 }
+
+  serialize :deck, Deck
+
+  after_initialize :initialize_deck
+
+  private
+
+  def initialize_deck
+    self.deck ||= Deck.new.shuffle!
+  end
 end
