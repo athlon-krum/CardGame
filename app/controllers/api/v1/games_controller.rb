@@ -13,6 +13,20 @@ module Api
         end
       end
 
+      def draw
+        raise ForbiddenError unless GamesPolicy.new(current_user).draw_card?
+
+        game = Game.find(params[:id])
+
+        result = Games::DrawCard.call(game)
+
+        if result.success?
+          render json: result.card.to_h, status: :ok
+        else
+          render json: result.errors, status: :unprocessable_entity
+        end
+      end
+
       private
 
       def create_params

@@ -1,20 +1,23 @@
 class Game < ApplicationRecord
-  has_one :deck
-  has_many :players
-
-  validates_presence_of :game_name
-  validates :game_name, length: {
-                                  minimum: 1,
-                                  maximum: 254
-                                }
+  validates_presence_of :name
+  validates :name, length: {
+                             minimum: 1,
+                             maximum: 254
+                           }
 
   serialize :deck, Deck
 
   after_initialize :initialize_deck
 
+  def draw_card
+    return nil if deck.empty?
+
+    deck.draw!
+  end
+
   private
 
   def initialize_deck
-    self.deck ||= Deck.new.shuffle!
+    self.deck.shuffle!
   end
 end

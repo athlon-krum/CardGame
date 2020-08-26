@@ -1,10 +1,14 @@
 class Deck
   def self.load(value)
-    Deck.new(value.map { |(rank_index, suite_index)| Card.load(rank_index, suite_index) })
+    return Deck.new unless value
+
+    parsed_value = JSON.parse(value)
+
+    Deck.new(parsed_value.map { |(rank_index, suite_index)| Card.load(rank_index, suite_index) })
   end
 
   def self.dump(deck)
-    deck.to_a.map { |card| Card.dump(card) }
+    JSON.dump(deck.to_a.map { |card| Card.dump(card) })
   end
 
   def self.default_deck
@@ -15,6 +19,14 @@ class Deck
 
   def initialize(deck=Deck.default_deck)
     @deck = deck
+  end
+
+  def empty?
+    deck.empty?
+  end
+
+  def draw!
+    deck.shift
   end
 
   def to_a

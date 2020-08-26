@@ -31,14 +31,11 @@ class Card
     "#{rank.capitalize} of #{suite.capitalize}"
   end
 
-  def <=>(other)
-    [rank_index, suite_index] <=> [other.rank_index, other.suite_index]
+  def to_h
+    { rank: RANKS[rank_index], suite: SUITES[suite_index] }
   end
 
-  def self.draw_card(game_id)
-    card = Card.where(deck_id: Game.find(game_id)).first
-    Card.where(deck_id: Game.find(game_id))
-      .delete(Card.where(deck_id: Game.find(game_id))[0])
-    card
+  def <=>(other)
+    [rank_index, suite_index] <=> [other.rank_index, other.suite_index]
   end
 end

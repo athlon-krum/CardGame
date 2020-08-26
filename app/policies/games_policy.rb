@@ -2,6 +2,10 @@ class GamesPolicy < ApplicationPolicy
   def create?
     user.is_admin?
   end
+
+  def draw_card?
+    true
+  end
 end
 
 class ApplicationPolicy
