@@ -14,6 +14,15 @@ class Card
     [card.rank_index, card.suite_index]
   end
 
+  def self.build!(string)
+    rank, suite = string.split(' of ', 2)
+
+    raise InvalidParam, 'Provided rank is not valid' unless RANKS.include?(rank&.downcase!)
+    raise InvalidParam, 'Provided suite is not valid' unless SUITES.include?(suite&.downcase!)
+
+    new(rank, suite)
+  end
+
   def initialize(rank, suite)
     @rank_index = RANKS.index(rank)
     @suite_index = SUITES.index(suite)
@@ -37,5 +46,8 @@ class Card
 
   def <=>(other)
     [rank_index, suite_index] <=> [other.rank_index, other.suite_index]
+  end
+
+  class InvalidParam < StandardError
   end
 end

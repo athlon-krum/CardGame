@@ -1,18 +1,24 @@
+# frozen_string_literal: true
+
 class GamesPolicy < ApplicationPolicy
   def create?
-    user.is_admin?
+    # context.user.is_admin?
+    true
   end
 
   def draw_card?
     true
   end
-end
 
-class ApplicationPolicy
-  def initialize(user, record=nil)
-    @user = user
-    @record = record
+  class Scope < ApplicationPolicy::Scope
+    #def resolve
+    #  if context.user.nil? # anonymous
+    #    scope.none
+    #  elsif context.user.is_admin?
+    #    scope.all
+    #  else
+    #    scope.where(user: context.user)
+    #  end
+    #end
   end
-
-  attr_reader :user, :record
 end

@@ -2,7 +2,7 @@ module Api
   module V1
     class GamesController < ApplicationController
       def create
-        raise ForbiddenError unless GamesPolicy.new(current_user).create?
+        raise ForbiddenError unless GamesPolicy.new(policy_context).create?
 
         result = Games::Create.call(create_params)
 
@@ -14,9 +14,9 @@ module Api
       end
 
       def draw
-        raise ForbiddenError unless GamesPolicy.new(current_user).draw_card?
+        game = GamePolicy::Scope.new(policy_context, Game).resolve.find(params[:id])
 
-        game = Game.find(params[:id])
+        raise ForbiddenError unless GamesPolicy.new(policy_context, game).draw_card?
 
         result = Games::DrawCard.call(game)
 
