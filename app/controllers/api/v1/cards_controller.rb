@@ -2,7 +2,7 @@ module Api
   module V1
     class CardsController < ApplicationController
       def compare
-        raise ForbiddenError unless CardsPolicy.new(policy_context).compare?
+        raise CardGameError::NotAuthorized unless CardsPolicy.new(policy_context).compare?
 
         result = Cards::Compare.call(compare_params)
 
