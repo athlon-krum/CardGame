@@ -4,13 +4,16 @@ module Games
   class Create
     include UseCase
 
-    def initialize(params)
+    def initialize(contract, params)
+      @contract = contract
       @params = params
+      @game = contract.model
     end
 
     def perform
       ActiveRecord::Base.transaction do
-        create_game
+        validate_contract
+        save_record if success?
 
         raise ActiveRecord::Rollback if failure?
       end
@@ -20,12 +23,16 @@ module Games
 
     private
 
-    attr_reader :params
+    attr_reader :params, :contract
 
-    def create_game
-      @game = Game.create(params)
+    def validate_contract
+      errors.copy!(contract.errors) unless contract.validate(params)
+    end
 
-      errors.copy!(game.errors)
+    def save_record
+      contract.save
+
+      errors.copy!(contract.model.errors)
     end
   end
 end

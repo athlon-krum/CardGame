@@ -4,7 +4,9 @@ module Api
       def create
         raise CardGameError::NotAuthorized unless GamesPolicy.new(policy_context).create?
 
-        result = Games::Create.call(create_params)
+        contract = Games::CreateContract.new(Game.new)
+
+        result = Games::Create.call(contract, create_params)
 
         if result.success?
           render json: result.game, status: :ok
@@ -30,7 +32,7 @@ module Api
       private
 
       def create_params
-        params.permit(:name, :player_1, :player_2)
+        params.require(:game)
       end
     end
   end
