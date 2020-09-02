@@ -14,6 +14,8 @@ class ApplicationPolicy
       @scope = scope
     end
 
+    attr_reader :context, :scope
+
     def resolve
       scope
     end

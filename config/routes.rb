@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :games, only: %i[edit update]
+
   namespace 'api' do
     namespace 'v1' do
       resources :games, only: %i[create] do

@@ -10,6 +10,8 @@ gem 'turbolinks', '~> 5'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'reform-rails'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'cells-rails'
+gem 'cells-erb'
 
 group :development, :test do
   %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|

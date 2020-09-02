@@ -6,6 +6,14 @@ class GamesPolicy < ApplicationPolicy
     true
   end
 
+  def edit?
+    update?
+  end
+
+  def update?
+    true
+  end
+
   def draw_card?
     true
   end
