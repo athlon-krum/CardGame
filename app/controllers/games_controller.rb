@@ -16,13 +16,13 @@ class GamesController < ApplicationController
   end
 
   def update
-    game = GamesPolicy::Scope.new(policy_context, Game).resolve.find(update_params[:id])
+    game = GamesPolicy::Scope.new(policy_context, Game).resolve.find(params[:id])
 
     raise CardGameError::NotAuthorized unless GamesPolicy.new(policy_context).update?
 
     contract = Games::UpdateContract.new(game)
 
-    result = Games::Update.call(contract, create_params)
+    result = Games::Update.call(contract, update_params)
 
     respond_to do |format|
       format.html do

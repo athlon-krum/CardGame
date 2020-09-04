@@ -1,1 +1,8 @@
 Update <%= name %>!
+
+<%= form_with model: contract, scope: :game, url: game_path(contract.model.id) do |form| %>
+  <%= form.text_field :name %>
+  <%= form.text_field :first_player %>
+  <%= form.text_field :second_player %>
+  <%= form.submit %>
+<% end %>

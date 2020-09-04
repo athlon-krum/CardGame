@@ -5,8 +5,8 @@
 * Scope Object
 * Serializers
 * Form Object
+* ViewModel
 
 ----
 
-* ViewModel
 * Write tests
